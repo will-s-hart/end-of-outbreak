@@ -1,0 +1,12 @@
+name: endoutbreak
+channels:
+ - conda-forge
+ - nodefaults
+dependencies:
+ - numpy
+ - scipy
+ - matplotlib
+ - seaborn>=0.13
+ - pandas
+ - openpyxl
+ - joblib
