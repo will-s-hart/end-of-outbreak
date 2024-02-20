@@ -43,8 +43,7 @@ class EndOutbreakAnalyses:
         Object containing outbreak data, offspring distribution and serial interval
         distribution.
     options: dict
-        Dictionary of options for running analyses Default options are used a key-values
-        is not provided. Possible keys are:
+        Dictionary of options for running analyses. Possible keys are:
         "results_dir": str
             Directory to save results to. Must be provided.
         "figure_dir": str
