@@ -134,9 +134,9 @@ def _get_options_mcmc_sim(run_type):
         n_jobs = os.cpu_count() // 2
     if run_type in ["cluster", "local"]:
         options_mcmc = {
-            "no_iterations": 1000000,
-            "burn_in": 200000,
-            "thinning": 100,
+            "no_iterations": 10000000,
+            "burn_in": 2000000,
+            "thinning": 1000,
             "parallel": True,
             "n_jobs": n_jobs,
             "print_progress": True,
@@ -153,7 +153,7 @@ def _get_options_mcmc_sim(run_type):
         options_mcmc = {
             "no_iterations": 100000,
             "burn_in": 20000,
-            "thinning": 10,
+            "thinning": 100,
             "parallel": True,
             "n_jobs": n_jobs,
             "print_progress": True,
@@ -246,16 +246,16 @@ def _get_options_plot(outbreak):
     if outbreak == "sim1":
         options_plot["options_data_eop"]["t_max"] = 12
         options_plot["options_data_eop"]["xlabel"] = "Week of outbreak"
-        options_plot["options_serial_interval"][
-            "xlabel"
-        ] = "Weekly serial interval (weeks)"
+        options_plot["options_serial_interval"]["xlabel"] = (
+            "Weekly serial interval (weeks)"
+        )
     if outbreak == "sim2":
         options_plot["options_data_eop"]["t_max"] = 12
         options_plot["options_data_eop"]["xlabel"] = "Week of outbreak"
         options_plot["options_data_eop"]["show_legend"] = False
-        options_plot["options_serial_interval"][
-            "xlabel"
-        ] = "Weekly serial interval (weeks)"
+        options_plot["options_serial_interval"]["xlabel"] = (
+            "Weekly serial interval (weeks)"
+        )
     if outbreak == "sim3":
         options_plot["options_data_eop"]["t_max"] = 120
         options_plot["options_data_eop"]["xlim_left"] = -1
@@ -265,13 +265,10 @@ def _get_options_plot(outbreak):
             "handletextpad": 0.4,
             "borderaxespad": 0.4,
         }
-        # options_plot["options_data_eop"]["legend_kwargs"] = {"loc": "upper center"}
-        # options_plot["options_data_eop"]["legend_kwargs"] = {"loc": (0.42, 0.77)}
     if outbreak == "sim4":
         options_plot["options_data_eop"]["t_max"] = 210
         options_plot["options_data_eop"]["xlim_left"] = -1
         options_plot["options_data_eop"]["show_legend"] = False
-        # options_plot["options_data_eop"]["legend_kwargs"] = {"loc": "upper center"}
     if outbreak == "schematic":
         options_plot["options_data_eop"]["eop_methods"] = ["MCMC"]
         options_plot["options_data_eop"]["include_quantile"] = False

@@ -13,15 +13,14 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.ticker import MaxNLocator
 
-custom_sns_params = {
+rc_params = {
     "axes.spines.top": False,
     "axes.spines.right": False,
     "figure.autolayout": True,
     "axes.autolimit_mode": "round_numbers",
     "savefig.transparent": True,
-    # "savefig.bbox": "tight",
-    # "savefig.pad_inches": 0.1,
     "savefig.format": "pdf",
+    "svg.fonttype": "none",
     "axes.titlesize": 20,
     "axes.labelsize": 16,
     "lines.linewidth": 2,
@@ -30,7 +29,7 @@ custom_sns_params = {
     "ytick.labelsize": 16,
     "legend.fontsize": 14,
 }
-sns.set_theme(style="ticks", rc=custom_sns_params)
+sns.set_theme(style="ticks", rc=rc_params)
 
 
 class EndOutbreakAnalyses:
@@ -210,7 +209,7 @@ class EndOutbreakAnalyses:
 
     def make_figures(self):
         """
-        Method for producing figures for the paper and saving them to pdf files.
+        Method for producing figures for the paper and saving them to pdf and svg files.
 
         Plots are produced showing (i) the offspring distribution, (ii) the serial
         interval distribution, (iii) the case data and end-of-outbreak probabilities,
@@ -287,6 +286,7 @@ class EndOutbreakAnalyses:
         ax.set_ylabel("Probability")
         offspring_fig_path = figure_dir + "/offspring_distribution.pdf"
         plt.savefig(offspring_fig_path)
+        plt.savefig(offspring_fig_path.replace("pdf", "svg"))
         if display_fig:
             plt.show()
         if not keep_open:
@@ -317,6 +317,7 @@ class EndOutbreakAnalyses:
         ax.set_ylabel("Probability")
         si_fig_path = figure_dir + "/serial_interval.pdf"
         plt.savefig(si_fig_path)
+        plt.savefig(si_fig_path.replace("pdf", "svg"))
         if display_fig:
             plt.show()
         if not keep_open:
@@ -403,8 +404,8 @@ class EndOutbreakAnalyses:
                 "MCMC": "-",
                 "Traced": "k--",
                 "Nishiura": "-",
-                "Enumerate": "o",
-                "Simulation": "^",
+                "Enumerate": "ro",
+                "Simulation": "y^",
             }
             plot_df = self._end_outbreak_prob_df
             if eop_methods is not None:
@@ -449,6 +450,7 @@ class EndOutbreakAnalyses:
             )
         data_eop_fig_path = figure_dir + "/" + file_name + ".pdf"
         plt.savefig(data_eop_fig_path)
+        plt.savefig(data_eop_fig_path.replace("pdf", "svg"))
         if display_fig:
             plt.show()
         if not keep_open:
@@ -518,9 +520,9 @@ class EndOutbreakAnalyses:
             first_exceed_days_rel_post_curr = (mcmc_eop_post_df > threshold).idxmax(
                 axis=1
             ) - last_case_day
-            first_exceed_day_rel_post_df.loc[
-                :, threshold
-            ] = first_exceed_days_rel_post_curr
+            first_exceed_day_rel_post_df.loc[:, threshold] = (
+                first_exceed_days_rel_post_curr
+            )
         sns.pointplot(
             data=first_exceed_day_rel_post_df,
             ax=ax,
@@ -550,6 +552,7 @@ class EndOutbreakAnalyses:
             )
         declaration_fig_path = figure_dir + "/declaration.pdf"
         plt.savefig(declaration_fig_path)
+        plt.savefig(declaration_fig_path.replace("pdf", "svg"))
         if display_fig:
             plt.show()
         if not keep_open:
@@ -612,6 +615,7 @@ class EndOutbreakAnalyses:
             ax.set_ylim(bot, top)
             trace_fig_path = trace_fig_dir + "/day_" + str(t) + ".pdf"
             plt.savefig(trace_fig_path)
+            plt.savefig(trace_fig_path.replace("pdf", "svg"))
             if display_fig:
                 plt.show()
             if not keep_open:
@@ -655,6 +659,7 @@ class EndOutbreakAnalyses:
             # ax.grid(False)
             eop_hist_fig_path = eop_hist_fig_dir + "/day_" + str(t) + ".pdf"
             plt.savefig(eop_hist_fig_path)
+            plt.savefig(eop_hist_fig_path.replace("pdf", "svg"))
             if display_fig:
                 plt.show()
             if not keep_open:

@@ -5,14 +5,15 @@ simulated outbreaks, and save the output of four selected simulations".
 
 import os
 
-import numpy as np
-from scipy.stats import gamma
-
 import ebola_parameters
 import endoutbreak
 import endoutbreak.sim
+import numpy as np
+from scipy.stats import gamma
 
-NO_SIMS = 400
+WEEKLY_SIMS = 200
+DAILY_SIMS = 800
+NO_SIMS = WEEKLY_SIMS + DAILY_SIMS
 SIM1_ITERATION = 43
 SIM2_ITERATION = 102
 SIM3_ITERATION = 206
@@ -28,12 +29,10 @@ def _generate_sim_data():
     sim2_data_dir = os.path.join(curr_dir, "../results/sim2/")
     sim3_data_dir = os.path.join(curr_dir, "../results/sim3/")
     sim4_data_dir = os.path.join(curr_dir, "../results/sim4/")
-    schematic_data_dir = os.path.join(curr_dir, "../results/schematic/")
     os.makedirs(sim1_data_dir, exist_ok=True)
     os.makedirs(sim2_data_dir, exist_ok=True)
     os.makedirs(sim3_data_dir, exist_ok=True)
     os.makedirs(sim4_data_dir, exist_ok=True)
-    os.makedirs(schematic_data_dir, exist_ok=True)
     # Inputs to branching process model.
     reproduction_number = ebola_parameters.REPRODUCTION_NUMBER
     offspring_dispersion_param = ebola_parameters.OFFSPRING_DISPERSION_PARAM
@@ -57,7 +56,7 @@ def _generate_sim_data():
         serial_interval_distrib_cont_weekly
     )
     # Other options
-    day_stop = 420
+    day_stop = 1000
     rng_seed = 7
     # Set random number generator seeds for each simulation (using different seeds for
     # each simulation ensures that the value of t_stop does not affect the results).
@@ -66,25 +65,29 @@ def _generate_sim_data():
 
     # Run simulations
     for iteration in range(NO_SIMS):
-        if iteration < NO_SIMS / 2:
+        if iteration < WEEKLY_SIMS:
             serial_interval_distrib = serial_interval_distrib_weekly
             t_stop = day_stop // 7
         else:
             serial_interval_distrib = serial_interval_distrib_daily
             t_stop = day_stop
         rng = np.random.default_rng(seed=child_seeds[iteration])
-        transmission_data, outbreak_over = endoutbreak.sim.OutbreakSimulationTraced(
+        transmission_data, _ = endoutbreak.sim.OutbreakSimulationTraced(
             offspring_distrib,
             serial_interval_distrib,
             t_stop=t_stop,
             rng=rng,
         ).run_sim()
         day_reported = transmission_data.day_reported
-        if outbreak_over and len(day_reported) > 3:
+        if iteration in [
+            SIM1_ITERATION,
+            SIM2_ITERATION,
+            SIM3_ITERATION,
+            SIM4_ITERATION,
+        ]:
             print(
-                "Iteration: " + str(iteration),
-                "day_reported =",
-                day_reported,
+                f"Iteration:  {str(iteration)},",
+                f"number of cases = {len(day_reported)}",
             )
         # Save output for selected iterations
         if iteration == SIM1_ITERATION:
