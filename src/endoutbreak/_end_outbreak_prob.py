@@ -296,7 +296,7 @@ class EndOutbreakProbCalculatorMCMC(EndOutbreakProbCalculator):
                 "MCMC iteration": iterations_kept + 1,
                 "After burn-in": after_burn_in_kept_mask,
                 "Log-likelihood": log_lik_post,
-                "End-of-outbreak-probability": end_outbreak_prob_post,
+                "End-of-outbreak probability": end_outbreak_prob_post,
             }
         )
         detail_df.set_index(["MCMC iteration", "After burn-in"], inplace=True)

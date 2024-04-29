@@ -264,7 +264,7 @@ class EndOutbreakAnalyses:
             plot_var="Log-likelihood", **options_mcmc_log_lik_trace
         )
         self._make_mcmc_trace_figs(
-            plot_var="End-of-outbreak-probability", **options_mcmc_eop_trace
+            plot_var="End-of-outbreak probability", **options_mcmc_eop_trace
         )
         self._make_mcmc_eop_hist_figs(**options_mcmc_eop_hist)
 
@@ -419,7 +419,7 @@ class EndOutbreakAnalyses:
                 # Compute and plot 95% confidence bounds from MCMC output
                 mcmc_detail_df = self._output_mcmc_dfs["detail"]
                 eop_post_df = mcmc_detail_df.xs(
-                    "End-of-outbreak-probability", level=1, axis=1
+                    "End-of-outbreak probability", level=1, axis=1
                 ).xs(True, level="After burn-in")
                 eop_mcmc_lower = eop_post_df.quantile(0.025)
                 eop_mcmc_lower.index = eop_mcmc_lower.index.astype(int)
@@ -433,7 +433,7 @@ class EndOutbreakAnalyses:
                     clip_on=False,
                 )
             ax2.set_ylim(0, 1)
-            ax2.set_ylabel("End-of-outbreak-probability")
+            ax2.set_ylabel("End-of-outbreak probability")
             plt.legend(**legend_kwargs).set_visible(show_legend)
         if declaration_day is not None:
             try:
@@ -508,7 +508,7 @@ class EndOutbreakAnalyses:
         # end-of-outbreak probability exceeds each threshold
         mcmc_eop_post_df = (
             self._output_mcmc_dfs["detail"]
-            .xs("End-of-outbreak-probability", level=1, axis=1)
+            .xs("End-of-outbreak probability", level=1, axis=1)
             .xs(True, level="After burn-in")
             .loc[:, t_vec_incl_mask]
         )
@@ -569,13 +569,13 @@ class EndOutbreakAnalyses:
     ):
         # Method for producing MCMC trace plots. Can be used to plot the
         # log-likelihood (plot_var='Log-likelihood') or end-of-outbreak probability
-        # (plot_var='End-of-outbreak-probability').
+        # (plot_var='End-of-outbreak probability').
         assert plot_var in [
             "Log-likelihood",
-            "End-of-outbreak-probability",
+            "End-of-outbreak probability",
         ], (
             "Invalid plot_var specified. Must be 'Log-likelihood' or"
-            " 'End-of-outbreak-probability'."
+            " 'End-of-outbreak probability'."
         )
         if t_vec_plot is None:
             t_vec_plot = []
@@ -584,7 +584,7 @@ class EndOutbreakAnalyses:
         figure_dir = self._options["figure_dir"]
         if plot_var == "Log-likelihood":
             trace_fig_dir = figure_dir + "/mcmc_output/log_lik_trace"
-        elif plot_var == "End-of-outbreak-probability":
+        elif plot_var == "End-of-outbreak probability":
             trace_fig_dir = figure_dir + "/mcmc_output/eop_trace"
         os.makedirs(trace_fig_dir, exist_ok=True)
         options_mcmc = self._options["options_mcmc"]
@@ -606,7 +606,7 @@ class EndOutbreakAnalyses:
             ax.set_xlim(0, no_iterations)
             if y_lim_vals is not None:
                 ax.set_ylim(y_lim_vals[i])
-            elif plot_var == "End-of-outbreak-probability":
+            elif plot_var == "End-of-outbreak probability":
                 ax.set_ylim(0, 1)
             ax.set_xlabel("MCMC iteration")
             ax.set_ylabel(plot_var)
@@ -635,7 +635,7 @@ class EndOutbreakAnalyses:
         os.makedirs(eop_hist_fig_dir, exist_ok=True)
         mcmc_detail_df = self._output_mcmc_dfs["detail"]
         eop_post_df = mcmc_detail_df.xs(
-            "End-of-outbreak-probability", level=1, axis=1
+            "End-of-outbreak probability", level=1, axis=1
         ).xs(True, level="After burn-in")
         for i in range(len(t_vec_plot)):  # pylint: disable=consider-using-enumerate
             t = t_vec_plot[i]
