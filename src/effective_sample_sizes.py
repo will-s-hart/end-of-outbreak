@@ -7,10 +7,10 @@ import paper_analyses
 OUTBREAK_ESS_PRINT_TIMES = {
     "Ebola_Likati": [30, 50, 70, 85, 100],
     "Ebola_Equateur": [25, 130, 150, 170],
-    "sim1": [4, 6, 8],
-    "sim2": [4, 6, 8],
-    "sim3": [30, 70, 90, 120],
-    "sim4": [40, 80, 160, 210],
+    "sim1": [],
+    "sim2": [],
+    "sim3": [],
+    "sim4": [],
 }
 
 
@@ -20,7 +20,7 @@ def _get_effective_sample_size(outbreak):
     end_outbreak_analyses = paper_analyses.EndOutbreakAnalyses(outbreak_descr, options)
     end_outbreak_analyses.load_results()
     mcmc_detail_df = end_outbreak_analyses._output_mcmc_dfs["detail"]
-    eop_post_df = mcmc_detail_df.xs("End-of-outbreak-probability", level=1, axis=1).xs(
+    eop_post_df = mcmc_detail_df.xs("End-of-outbreak probability", level=1, axis=1).xs(
         True, level="After burn-in"
     )
     ess_df = pd.DataFrame(columns=eop_post_df.columns)
